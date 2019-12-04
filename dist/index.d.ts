@@ -1,6 +1,13 @@
-export declare class Input {
+/// <reference types="node" />
+import { EventEmitter } from "events";
+interface DeviceFilter {
+    name?: string;
+    port?: number;
+}
+export declare class Input extends EventEmitter {
     private midi;
-    constructor(name?: string, portNumber?: number, virtual?: boolean);
+    constructor(filter: DeviceFilter, virtual?: boolean);
+    private handleMessage;
 }
 interface MidiDevice {
     name: string;

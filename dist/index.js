@@ -5,30 +5,41 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const midi_1 = __importDefault(require("midi"));
 const log4js_1 = require("log4js");
+const events_1 = require("events");
 const logger = log4js_1.getLogger();
 logger.level = "debug";
-class Input {
-    constructor(name, portNumber, virtual = false) {
+class Input extends events_1.EventEmitter {
+    constructor(filter, virtual = false) {
+        super();
+        this.handleMessage = (deltaTime, bytes) => {
+            logger.debug("handleMessage:", deltaTime, bytes);
+            this.emit("rawMessage", { deltaTime, bytes });
+        };
         this.midi = new midi_1.default.input();
-        logger.debug("node-midi", typeof this.midi, this.midi);
+        const { name, port } = filter;
         if (virtual) {
             // TODO: create virtual input
         }
         else {
-            if (name === undefined && portNumber === undefined) {
+            if (name === undefined && port === undefined) {
                 throw Error("you must define either a name or a portNumber");
             }
             const match = name !== undefined
                 ? exports.findMatch(this.midi, name)
-                : exports.listPorts(this.midi)[portNumber];
+                : exports.listPorts(this.midi)[port];
             if (match === undefined) {
                 logger.error("could not find MIDI device matching filter", {
                     name,
-                    portNumber
+                    port
                 });
                 throw Error("could not find midi device");
             }
             logger.info("found matching MIDI device:", match);
+            this.midi.openPort(match.port);
+            setTimeout(() => {
+                this.emit("ready", match);
+            });
+            this.midi.on("message", this.handleMessage);
         }
     }
 }
