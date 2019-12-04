@@ -1,0 +1,27 @@
+{
+  "name": "midi-ts",
+  "version": "1.0.0",
+  "description": "Wrapper for node-midi with TypeScript",
+  "main": "dist/index.js",
+  "scripts": {
+    "example": "npm run build && node example/example.js",
+    "build": "npx tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Stephen Buchanan",
+  "license": "ISC",
+  "dependencies": {
+    "log4js": "^6.1.0",
+    "midi": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.23",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1",
+    "shx": "^0.3.2",
+    "ts-jest": "^24.2.0",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.7.3"
+  }
+}
