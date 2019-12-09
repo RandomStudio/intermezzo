@@ -6,7 +6,7 @@
   "scripts": {
     "example": "npm run build && node example/example.js",
     "build": "npx tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx jest"
   },
   "author": "Stephen Buchanan",
   "license": "ISC",

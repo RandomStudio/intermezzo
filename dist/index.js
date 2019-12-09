@@ -6,7 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const midi_1 = __importDefault(require("midi"));
 const log4js_1 = require("log4js");
 const events_1 = require("events");
-const logger = log4js_1.getLogger();
+const types_1 = require("./types");
+const logger = log4js_1.getLogger("node-midi-ts");
 logger.level = "debug";
 class Input extends events_1.EventEmitter {
     constructor(filter, virtual = false) {
@@ -44,6 +45,16 @@ class Input extends events_1.EventEmitter {
     }
 }
 exports.Input = Input;
+exports.getMessageType = (bytes) => {
+    if (bytes[0] >= 0xf0) {
+        const name = types_1.ExtendedType[bytes[0]];
+        return types_1.ExtendedType[name];
+    }
+    else {
+        const name = types_1.MessageType[bytes[0] >> 4];
+        return types_1.MessageType[name];
+    }
+};
 exports.findMatch = (midiInterface, name, exact = false) => {
     const ports = exports.listPorts(midiInterface);
     return exact
