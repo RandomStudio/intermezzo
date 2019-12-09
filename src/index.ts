@@ -1,14 +1,10 @@
 import midi from "midi";
 import { getLogger } from "log4js";
 import { EventEmitter } from "events";
+import { MidiDevice, DeviceFilter, ExtendedType, MessageType } from "./types";
 
-const logger = getLogger();
+const logger = getLogger("node-midi-ts");
 logger.level = "debug";
-
-interface DeviceFilter {
-  name?: string;
-  port?: number;
-}
 
 export class Input extends EventEmitter {
   private midi: typeof midi.Input;
@@ -48,16 +44,21 @@ export class Input extends EventEmitter {
     }
   }
 
-  private handleMessage = (deltaTime: number, bytes: any) => {
+  private handleMessage = (deltaTime: number, bytes: number[]) => {
     logger.debug("handleMessage:", deltaTime, bytes);
     this.emit("rawMessage", { deltaTime, bytes });
   };
 }
 
-interface MidiDevice {
-  name: string;
-  port: number;
-}
+export const getMessageType = (bytes: number[]): MessageType | ExtendedType => {
+  if (bytes[0] >= 0xf0) {
+    const name = ExtendedType[bytes[0]];
+    return ExtendedType[name];
+  } else {
+    const name = MessageType[bytes[0] >> 4];
+    return MessageType[name];
+  }
+};
 
 export const findMatch = (
   midiInterface: typeof midi.Input | typeof midi.Output,
