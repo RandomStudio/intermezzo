@@ -6,6 +6,15 @@ export interface DeviceFilter {
     name?: string;
     port?: number;
 }
+export interface RawMessage {
+    deltaTime: number;
+    bytes: number[];
+}
+export interface NoteMessage {
+    note: number;
+    velocity: number;
+    channel: number;
+}
 export declare enum MessageType {
     noteOff = 8,
     noteOn = 9,

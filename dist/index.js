@@ -14,7 +14,15 @@ class Input extends events_1.EventEmitter {
         super();
         this.handleMessage = (deltaTime, bytes) => {
             logger.debug("handleMessage:", deltaTime, bytes);
-            this.emit("rawMessage", { deltaTime, bytes });
+            const rawPayload = { deltaTime, bytes };
+            this.emit("rawMessage", rawPayload);
+            const messageType = exports.getMessageType(bytes);
+            switch (messageType) {
+                case types_1.MessageType.noteOn:
+                case types_1.MessageType.noteOff:
+                    const note = exports.getNote(bytes);
+                    this.emit(messageType === types_1.MessageType.noteOn ? "noteOn" : "noteOff", note);
+            }
         };
         this.midi = new midi_1.default.input();
         const { name, port } = filter;
@@ -55,6 +63,11 @@ exports.getMessageType = (bytes) => {
         return types_1.MessageType[name];
     }
 };
+exports.getNote = (bytes) => ({
+    channel: bytes[0] & 0xf,
+    note: bytes[1],
+    velocity: bytes[2]
+});
 exports.findMatch = (midiInterface, name, exact = false) => {
     const ports = exports.listPorts(midiInterface);
     return exact

@@ -8,6 +8,17 @@ export interface DeviceFilter {
   port?: number;
 }
 
+export interface RawMessage {
+  deltaTime: number;
+  bytes: number[];
+}
+
+export interface NoteMessage {
+  note: number;
+  velocity: number;
+  channel: number;
+}
+
 export enum MessageType {
   noteOff = 0x08,
   noteOn = 0x09,
