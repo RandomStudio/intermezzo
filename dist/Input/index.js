@@ -13,9 +13,16 @@ class Input extends events_1.EventEmitter {
             __1.logger.warn("closing MIDI input device");
             this.midi.close();
         };
+        this.getName = () => this.device.name;
+        this.getPort = () => this.device.port;
+        this.getDevice = () => this.device;
         this.handleMessage = (deltaTime, bytes) => {
             __1.logger.debug("handleMessage:", deltaTime, bytes);
-            const rawPayload = { deltaTime, bytes, deviceName: this.name };
+            const rawPayload = {
+                deltaTime,
+                bytes,
+                deviceName: this.device.name
+            };
             this.emit("rawMessage", rawPayload);
             const messageType = __1.getMessageType(bytes);
             const e = __1.getMessageEvent(messageType, bytes);
@@ -38,7 +45,7 @@ class Input extends events_1.EventEmitter {
                 });
                 throw Error("could not find midi device");
             }
-            this.name = match.name;
+            this.device = match;
             __1.logger.info("found matching MIDI device:", match);
             this.midi.openPort(match.port);
             setTimeout(() => {

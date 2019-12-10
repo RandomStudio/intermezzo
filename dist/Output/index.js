@@ -15,6 +15,9 @@ class Output extends events_1.EventEmitter {
             const bytes = exports.messageToBytes({ name, payload });
             this.midi.sendMessage(bytes);
         };
+        this.getName = () => this.device.name;
+        this.getPort = () => this.device.port;
+        this.getDevice = () => this.device;
         this.midi = new midi_1.default.output();
         const { name, port } = filter;
         if (virtual) {
@@ -32,6 +35,7 @@ class Output extends events_1.EventEmitter {
                 });
                 throw Error("could not find midi device");
             }
+            this.device = match;
             __1.logger.info("found matching MIDI device:", match);
             this.midi.openPort(match.port);
             setTimeout(() => {
