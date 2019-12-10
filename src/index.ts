@@ -38,6 +38,12 @@ export const getMessageEvent = (
         name: getNameFromType(messageType),
         payload: note
       };
+    case MessageType.controlChange:
+      const c: ControlChangeMessage = getControlChange(bytes);
+      return {
+        name: getNameFromType(messageType),
+        payload: c
+      };
     default:
       logger.warn("unknown message type");
       return null;

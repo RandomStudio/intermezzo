@@ -6,8 +6,8 @@ describe("convert types properly from first byte of message", () => {
     test("control change messages", () => {
         const bytes = [177, 7, 72];
         const messageType = index_1.getMessageType(bytes);
-        expect(messageType).toBe(types_1.MessageType.cc);
-        expect(types_1.MessageTypeName.cc).toBe("controlChange");
+        expect(messageType).toBe(types_1.MessageType.controlChange);
+        expect(types_1.MessageTypeName.controlChange).toBe("controlChange");
     });
     test("note on messages", () => {
         const bytes = [144, 45, 58];
@@ -28,7 +28,7 @@ describe("convert types properly from first byte of message", () => {
 });
 describe("names from message type enums", () => {
     test("names", () => {
-        const messageType = types_1.MessageType.cc;
+        const messageType = types_1.MessageType.controlChange;
         expect(index_1.getNameFromType(messageType)).toBe("controlChange");
     });
 });
@@ -58,7 +58,7 @@ describe("bytes to message payloads", () => {
     test("control change controller 7 channel 0", () => {
         const bytes = [176, 7, 96];
         const messageType = index_1.getMessageType(bytes);
-        expect(messageType).toBe(types_1.MessageType.cc);
+        expect(messageType).toBe(types_1.MessageType.controlChange);
         const c = index_1.getControlChange(bytes);
         expect(c.channel).toBe(0);
         expect(c.controller).toBe(7);

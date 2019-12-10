@@ -21,6 +21,12 @@ exports.getMessageEvent = (messageType, bytes) => {
                 name: exports.getNameFromType(messageType),
                 payload: note
             };
+        case types_1.MessageType.controlChange:
+            const c = exports.getControlChange(bytes);
+            return {
+                name: exports.getNameFromType(messageType),
+                payload: c
+            };
         default:
             exports.logger.warn("unknown message type");
             return null;

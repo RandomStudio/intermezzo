@@ -30,7 +30,7 @@ export declare enum MessageType {
     noteOff = 8,
     noteOn = 9,
     polyAftertouch = 10,
-    cc = 11,
+    controlChange = 11,
     program = 12,
     channelAftertouch = 13,
     pitch = 14
@@ -52,7 +52,7 @@ export declare enum MessageTypeName {
     noteOff = "noteOff",
     noteOn = "noteOn",
     polyAftertouch = "polyphonicKeyPressure",
-    cc = "controlChange",
+    controlChange = "controlChange",
     program = "programChange",
     channelAftertouch = "channelPressure",
     pitch = "pitchBend",

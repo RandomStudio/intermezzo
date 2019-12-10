@@ -56,6 +56,7 @@ export class Output extends EventEmitter {
 }
 
 export const messageToBytes = (msg: MidiMessageEvent): number[] => {
+  // tslint:disable-next-line: prefer-const
   let bytes = [];
   if (isNormalMessage(msg.name)) {
     const { channel } = msg.payload as ControlChangeMessage & NoteMessage;
@@ -65,6 +66,11 @@ export const messageToBytes = (msg: MidiMessageEvent): number[] => {
     const note = msg.payload as NoteMessage;
     bytes.push(note.note);
     bytes.push(note.velocity);
+  }
+  if (msg.name === MessageTypeName.controlChange) {
+    const c = msg.payload as ControlChangeMessage;
+    bytes.push(c.controller);
+    bytes.push(c.value);
   }
   return bytes;
 };

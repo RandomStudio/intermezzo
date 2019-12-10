@@ -42,6 +42,7 @@ class Output extends events_1.EventEmitter {
 }
 exports.Output = Output;
 exports.messageToBytes = (msg) => {
+    // tslint:disable-next-line: prefer-const
     let bytes = [];
     if (exports.isNormalMessage(msg.name)) {
         const { channel } = msg.payload;
@@ -51,6 +52,11 @@ exports.messageToBytes = (msg) => {
         const note = msg.payload;
         bytes.push(note.note);
         bytes.push(note.velocity);
+    }
+    if (msg.name === types_1.MessageTypeName.controlChange) {
+        const c = msg.payload;
+        bytes.push(c.controller);
+        bytes.push(c.value);
     }
     return bytes;
 };

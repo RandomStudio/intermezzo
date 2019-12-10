@@ -27,6 +27,10 @@ input.on("noteOn", e => {
   }
 });
 
+input.on("controlChange", e => {
+  console.log("controlChange:", e);
+});
+
 input.on("noteOff", e => {
   console.log("noteOff:", e);
 });
