@@ -9,6 +9,7 @@ export interface DeviceFilter {
 }
 
 export interface RawMessage {
+  deviceName: string;
   deltaTime: number;
   bytes: number[];
 }
@@ -25,11 +26,11 @@ export interface ControlChangeMessage {
   value: number;
 }
 
-export type PayloadType = RawMessage | NoteMessage | ControlChangeMessage;
+export type ValidPayloadTypes = RawMessage | NoteMessage | ControlChangeMessage;
 
 export interface MidiMessageEvent {
   name: MessageTypeName;
-  payload: PayloadType;
+  payload: ValidPayloadTypes;
 }
 
 export enum MessageType {

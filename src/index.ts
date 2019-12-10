@@ -16,6 +16,7 @@ export const logger = getLogger("node-midi-ts");
 logger.level = "debug";
 
 export * from "./Input";
+export * from "./Output";
 
 export const findMatch = (
   midiInterface: typeof midi.Input | typeof midi.Output,
@@ -51,7 +52,7 @@ export const getNameFromExtendedType = (
 ): MessageTypeName => MessageTypeName[ExtendedType[messageType]];
 
 export const getMessageType = (bytes: number[]): MessageType | ExtendedType => {
-  if (bytes[0] >= 0xf0) {
+  if (isExtendedType(bytes)) {
     const name = ExtendedType[bytes[0]];
     return ExtendedType[name];
   } else {
@@ -103,3 +104,5 @@ export const listPorts = (
     };
   });
 };
+
+export const isExtendedType = (bytes: number[]) => bytes[0] >= 0xf0;
