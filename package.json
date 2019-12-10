@@ -1,7 +1,7 @@
 {
-  "name": "midi-ts",
-  "version": "1.0.0",
-  "description": "Wrapper for node-midi with TypeScript",
+  "name": "intermezzo",
+  "version": "0.1.0",
+  "description": "Ergonomic wrapper for node-midi, powered by TypeScript",
   "main": "dist/index.js",
   "scripts": {
     "example": "npm run build && node example/example.js",
@@ -9,7 +9,7 @@
     "test": "npx jest"
   },
   "author": "Stephen Buchanan",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "log4js": "^6.1.0",
     "midi": "^1.0.0"
