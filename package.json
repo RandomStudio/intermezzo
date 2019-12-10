@@ -4,6 +4,7 @@
   "description": "Ergonomic wrapper for node-midi, powered by TypeScript",
   "main": "dist/index.js",
   "scripts": {
+    "format": "prettier \"**/*.{ts,tsx,js,jsx,css,scss,sass,less,md}\" --write",
     "example": "npm run build && node example/example.js",
     "build": "npx tsc",
     "test": "npx jest"

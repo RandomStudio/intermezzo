@@ -3,14 +3,16 @@ import {
   getNote,
   getControlChange,
   getMessageEvent,
-  getNameFromType
+  getNameFromType,
+  findMatch
 } from "./index";
 import {
   MessageType,
   MessageTypeName,
   NoteMessage,
   ControlChangeMessage,
-  MidiMessageEvent
+  MidiMessageEvent,
+  DeviceFilter
 } from "./types";
 
 describe("convert types properly from first byte of message", () => {

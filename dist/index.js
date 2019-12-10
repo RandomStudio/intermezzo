@@ -1,54 +1,16 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const midi_1 = __importDefault(require("midi"));
-const log4js_1 = require("log4js");
-const events_1 = require("events");
-const types_1 = require("./types");
-const logger = log4js_1.getLogger("node-midi-ts");
-logger.level = "debug";
-class Input extends events_1.EventEmitter {
-    constructor(filter, virtual = false) {
-        super();
-        this.handleMessage = (deltaTime, bytes) => {
-            logger.debug("handleMessage:", deltaTime, bytes);
-            const rawPayload = { deltaTime, bytes };
-            this.emit("rawMessage", rawPayload);
-            const messageType = exports.getMessageType(bytes);
-            const e = exports.getMessageEvent(messageType, bytes);
-            this.emit(e.name, e.payload);
-        };
-        this.midi = new midi_1.default.input();
-        const { name, port } = filter;
-        if (virtual) {
-            // TODO: create virtual input
-        }
-        else {
-            if (name === undefined && port === undefined) {
-                throw Error("you must define either a name or a portNumber");
-            }
-            const match = name !== undefined
-                ? exports.findMatch(this.midi, name)
-                : exports.listPorts(this.midi)[port];
-            if (match === undefined) {
-                logger.error("could not find MIDI device matching filter", {
-                    name,
-                    port
-                });
-                throw Error("could not find midi device");
-            }
-            logger.info("found matching MIDI device:", match);
-            this.midi.openPort(match.port);
-            setTimeout(() => {
-                this.emit("ready", match);
-            });
-            this.midi.on("message", this.handleMessage);
-        }
-    }
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
-exports.Input = Input;
+Object.defineProperty(exports, "__esModule", { value: true });
+const log4js_1 = require("log4js");
+const types_1 = require("./types");
+exports.logger = log4js_1.getLogger("node-midi-ts");
+exports.logger.level = "debug";
+__export(require("./Input"));
+exports.findMatch = (midiInterface, filter) => filter.name !== undefined
+    ? exports.matchByName(midiInterface, filter.name)
+    : exports.listPorts(midiInterface)[filter.port];
 exports.getMessageEvent = (messageType, bytes) => {
     switch (messageType) {
         case types_1.MessageType.noteOn:
@@ -59,7 +21,7 @@ exports.getMessageEvent = (messageType, bytes) => {
                 payload: note
             };
         default:
-            logger.warn("unknown message type");
+            exports.logger.warn("unknown message type");
             return null;
     }
 };
@@ -86,7 +48,7 @@ exports.getControlChange = (bytes) => ({
     value: bytes[2]
 });
 exports.getChannel = (bytes) => bytes[0] & 0xf;
-exports.findMatch = (midiInterface, name, exact = false) => {
+exports.matchByName = (midiInterface, name, exact = false) => {
     const ports = exports.listPorts(midiInterface);
     return exact
         ? ports.find(i => i.name === name)
@@ -99,7 +61,7 @@ exports.listPorts = (midiInterface) => {
         .map((i, index) => index);
     return portNumbers.map(i => {
         const name = midiInterface.getPortName(i);
-        logger.debug(`device #${i} = ${name}`);
+        exports.logger.debug(`device #${i} = ${name}`);
         return {
             port: i,
             name
