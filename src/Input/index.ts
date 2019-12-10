@@ -1,11 +1,16 @@
 import midi from "midi";
 import { EventEmitter } from "events";
-import { DeviceFilter, RawMessage, MidiMessageEvent } from "../types";
+import {
+  DeviceFilter,
+  RawMessage,
+  MidiMessageEvent,
+  MidiDevice
+} from "../types";
 import { findMatch, logger, getMessageType, getMessageEvent } from "..";
 
 export class Input extends EventEmitter {
   private midi: typeof midi.Input;
-  private name: string;
+  private device: MidiDevice;
 
   constructor(filter: DeviceFilter, virtual = false) {
     super();
@@ -30,7 +35,7 @@ export class Input extends EventEmitter {
         throw Error("could not find midi device");
       }
 
-      this.name = match.name;
+      this.device = match;
 
       logger.info("found matching MIDI device:", match);
 
@@ -48,9 +53,18 @@ export class Input extends EventEmitter {
     this.midi.close();
   };
 
+  public getName = () => this.device.name;
+  public getPort = () => this.device.port;
+
+  public getDevice = () => this.device;
+
   private handleMessage = (deltaTime: number, bytes: number[]) => {
     logger.debug("handleMessage:", deltaTime, bytes);
-    const rawPayload: RawMessage = { deltaTime, bytes, deviceName: this.name };
+    const rawPayload: RawMessage = {
+      deltaTime,
+      bytes,
+      deviceName: this.device.name
+    };
     this.emit("rawMessage", rawPayload);
 
     const messageType = getMessageType(bytes);

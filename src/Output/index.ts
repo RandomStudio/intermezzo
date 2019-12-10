@@ -8,12 +8,14 @@ import {
   ExtendedType,
   MessageType,
   ControlChangeMessage,
-  NoteMessage
+  NoteMessage,
+  MidiDevice
 } from "../types";
 import { findMatch, logger, getMessageType, isExtendedType } from "..";
 
 export class Output extends EventEmitter {
   private midi: typeof midi.Input;
+  private device: MidiDevice;
 
   constructor(filter: DeviceFilter, virtual = false) {
     super();
@@ -39,6 +41,8 @@ export class Output extends EventEmitter {
         throw Error("could not find midi device");
       }
 
+      this.device = match;
+
       logger.info("found matching MIDI device:", match);
 
       this.midi.openPort(match.port);
@@ -53,6 +57,11 @@ export class Output extends EventEmitter {
     const bytes = messageToBytes({ name, payload });
     this.midi.sendMessage(bytes);
   };
+
+  public getName = () => this.device.name;
+  public getPort = () => this.device.port;
+
+  public getDevice = () => this.device;
 }
 
 export const messageToBytes = (msg: MidiMessageEvent): number[] => {
