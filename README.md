@@ -1,6 +1,6 @@
 # Prestissimo
 
-Making MIDI interfacing with NodeJS even easier. Quicker, quicker, _prestissimo_!
+Making MIDI interfacing with NodeJS even easier. Quick, quicker... [prestissimo](https://en.wiktionary.org/wiki/prestissimo)!
 
 ## Beta functionality
 
