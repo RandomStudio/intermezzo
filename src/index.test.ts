@@ -106,4 +106,20 @@ describe("message events", () => {
     const e: MidiMessageEvent = getMessageEvent(messageType, bytes);
     expect(e.name).toBe("noteOff");
   });
+
+  test("control change message", () => {
+    const bytes = [177, 7, 83];
+    const messageType = getMessageType(bytes);
+
+    expect(messageType).toBe(MessageType.controlChange);
+
+    const e: MidiMessageEvent = getMessageEvent(messageType, bytes);
+    expect(e.name).toBe("controlChange");
+    // tslint:disable-next-line: no-string-literal
+    expect(e.payload["controller"]).toBe(7);
+    // tslint:disable-next-line: no-string-literal
+    expect(e.payload["value"]).toBe(83);
+    // tslint:disable-next-line: no-string-literal
+    expect(e.payload["velocity"]).toBeUndefined();
+  });
 });
