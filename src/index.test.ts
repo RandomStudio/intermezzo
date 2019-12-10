@@ -1,5 +1,10 @@
-import { getMessageType, getNote } from "./index";
-import { MessageType, MessageTypeName, NoteMessage } from "./types";
+import { getMessageType, getNote, getControlChange } from "./index";
+import {
+  MessageType,
+  MessageTypeName,
+  NoteMessage,
+  ControlChangeMessage
+} from "./types";
 
 describe("convert types properly from first byte of message", () => {
   test("control change messages", () => {
@@ -59,5 +64,17 @@ describe("bytes to message payloads", () => {
     expect(n.velocity).toBe(47);
     expect(n.channel).toBeDefined();
     expect(n.channel).toBe(0);
+  });
+
+  test("control change controller 7 channel 0", () => {
+    const bytes = [176, 7, 96];
+    const messageType = getMessageType(bytes);
+
+    expect(messageType).toBe(MessageType.cc);
+
+    const c: ControlChangeMessage = getControlChange(bytes);
+    expect(c.channel).toBe(0);
+    expect(c.controller).toBe(7);
+    expect(c.value).toBe(96);
   });
 });

@@ -7,7 +7,8 @@ import {
   ExtendedType,
   MessageType,
   RawMessage,
-  NoteMessage
+  NoteMessage,
+  ControlChangeMessage
 } from "./types";
 
 const logger = getLogger("node-midi-ts");
@@ -81,10 +82,18 @@ export const getMessageType = (bytes: number[]): MessageType | ExtendedType => {
 };
 
 export const getNote = (bytes: number[]): NoteMessage => ({
-  channel: bytes[0] & 0xf,
+  channel: getChannel(bytes),
   note: bytes[1],
   velocity: bytes[2]
 });
+
+export const getControlChange = (bytes: number[]): ControlChangeMessage => ({
+  channel: getChannel(bytes),
+  controller: bytes[1],
+  value: bytes[2]
+});
+
+export const getChannel = (bytes: number[]): number => bytes[0] & 0xf;
 
 export const findMatch = (
   midiInterface: typeof midi.Input | typeof midi.Output,

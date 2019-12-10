@@ -35,6 +35,18 @@ describe("bytes to message payloads", () => {
         const n = index_1.getNote(bytes);
         expect(n.note).toBe(60); // middle C
         expect(n.velocity).toBe(105);
+        expect(n.channel).toBeDefined();
+        expect(n.channel).toBe(0);
+    });
+    test("middle C noteOff", () => {
+        const bytes = [128, 60, 47];
+        const messageType = index_1.getMessageType(bytes);
+        expect(messageType).toBe(types_1.MessageType.noteOff);
+        expect(types_1.MessageTypeName.noteOff).toBe("note off");
+        const n = index_1.getNote(bytes);
+        expect(n.note).toBe(60); // middle C
+        expect(n.velocity).toBe(47);
+        expect(n.channel).toBeDefined();
         expect(n.channel).toBe(0);
     });
 });
