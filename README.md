@@ -103,3 +103,13 @@ output.send("noteOn", {
   channel: 0
 });
 ```
+
+### Utils
+
+If you have prestissimo installed as a local or global dependency, you should be able to run
+
+```
+npx midi-list
+```
+
+... And get a list of available **input** and **output** MIDI devices available on your system, with full names and port numbers.

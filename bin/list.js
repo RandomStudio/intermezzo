@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const { listPorts } = require("../dist");
 const midi = require("midi");
 const { getLogger } = require("log4js");
