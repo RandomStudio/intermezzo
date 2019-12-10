@@ -5,6 +5,7 @@ import { findMatch, logger, getMessageType, getMessageEvent } from "..";
 
 export class Input extends EventEmitter {
   private midi: typeof midi.Input;
+  private name: string;
 
   constructor(filter: DeviceFilter, virtual = false) {
     super();
@@ -14,7 +15,9 @@ export class Input extends EventEmitter {
       // TODO: create virtual input
     } else {
       if (name === undefined && port === undefined) {
-        throw Error("you must define either a name or a portNumber");
+        throw Error(
+          "you must define either a name or a portNumber for MIDI Input Device"
+        );
       }
 
       const match = findMatch(this.midi, filter);
@@ -27,6 +30,8 @@ export class Input extends EventEmitter {
         throw Error("could not find midi device");
       }
 
+      this.name = match.name;
+
       logger.info("found matching MIDI device:", match);
 
       this.midi.openPort(match.port);
@@ -38,9 +43,14 @@ export class Input extends EventEmitter {
     }
   }
 
+  public close = () => {
+    logger.warn("closing MIDI input device");
+    this.midi.close();
+  };
+
   private handleMessage = (deltaTime: number, bytes: number[]) => {
     logger.debug("handleMessage:", deltaTime, bytes);
-    const rawPayload: RawMessage = { deltaTime, bytes };
+    const rawPayload: RawMessage = { deltaTime, bytes, deviceName: this.name };
     this.emit("rawMessage", rawPayload);
 
     const messageType = getMessageType(bytes);
