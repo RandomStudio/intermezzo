@@ -2,6 +2,8 @@
 
 Making MIDI interfacing with NodeJS even easier. Quick, quicker... [prestissimo](https://en.wiktionary.org/wiki/prestissimo)!
 
+Depends on [node-midi](https://github.com/justinlatimer/node-midi) - excellent for the low-level interface, but not particularly easy to use. Also inspired by [easymidi](https://github.com/dinchak/node-easymidi) which works well but lacks TypeScript support and some other conveniences.
+
 ## Beta functionality
 
 This module currently only supports input/output for the following types of MIDI messages:
