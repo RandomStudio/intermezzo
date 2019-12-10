@@ -17,12 +17,8 @@ class Input extends events_1.EventEmitter {
             const rawPayload = { deltaTime, bytes };
             this.emit("rawMessage", rawPayload);
             const messageType = exports.getMessageType(bytes);
-            switch (messageType) {
-                case types_1.MessageType.noteOn:
-                case types_1.MessageType.noteOff:
-                    const note = exports.getNote(bytes);
-                    this.emit(messageType === types_1.MessageType.noteOn ? "noteOn" : "noteOff", note);
-            }
+            const e = exports.getMessageEvent(messageType, bytes);
+            this.emit(e.name, e.payload);
         };
         this.midi = new midi_1.default.input();
         const { name, port } = filter;
@@ -53,6 +49,22 @@ class Input extends events_1.EventEmitter {
     }
 }
 exports.Input = Input;
+exports.getMessageEvent = (messageType, bytes) => {
+    switch (messageType) {
+        case types_1.MessageType.noteOn:
+        case types_1.MessageType.noteOff:
+            const note = exports.getNote(bytes);
+            return {
+                name: exports.getNameFromType(messageType),
+                payload: note
+            };
+        default:
+            logger.warn("unknown message type");
+            return null;
+    }
+};
+exports.getNameFromType = (messageType) => types_1.MessageTypeName[types_1.MessageType[messageType]];
+exports.getNameFromExtendedType = (messageType) => types_1.MessageTypeName[types_1.ExtendedType[messageType]];
 exports.getMessageType = (bytes) => {
     if (bytes[0] >= 0xf0) {
         const name = types_1.ExtendedType[bytes[0]];
@@ -64,10 +76,16 @@ exports.getMessageType = (bytes) => {
     }
 };
 exports.getNote = (bytes) => ({
-    channel: bytes[0] & 0xf,
+    channel: exports.getChannel(bytes),
     note: bytes[1],
     velocity: bytes[2]
 });
+exports.getControlChange = (bytes) => ({
+    channel: exports.getChannel(bytes),
+    controller: bytes[1],
+    value: bytes[2]
+});
+exports.getChannel = (bytes) => bytes[0] & 0xf;
 exports.findMatch = (midiInterface, name, exact = false) => {
     const ports = exports.listPorts(midiInterface);
     return exact

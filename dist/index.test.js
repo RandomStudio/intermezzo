@@ -7,7 +7,7 @@ describe("convert types properly from first byte of message", () => {
         const bytes = [177, 7, 72];
         const messageType = index_1.getMessageType(bytes);
         expect(messageType).toBe(types_1.MessageType.cc);
-        expect(types_1.MessageTypeName.cc).toBe("control change");
+        expect(types_1.MessageTypeName.cc).toBe("controlChange");
     });
     test("note on messages", () => {
         const bytes = [144, 45, 58];
@@ -17,13 +17,19 @@ describe("convert types properly from first byte of message", () => {
         const bytes = [128, 45, 81];
         const messageType = index_1.getMessageType(bytes);
         expect(messageType).toBe(types_1.MessageType.noteOff);
-        expect(types_1.MessageTypeName.noteOff).toBe("note off");
+        expect(types_1.MessageTypeName.noteOff).toBe("noteOff");
     });
     test("pitch bend messages", () => {
         const bytes = [224, 0, 0];
         const messageType = index_1.getMessageType(bytes);
         expect(messageType).toBe(types_1.MessageType.pitch);
-        expect(types_1.MessageTypeName.pitch).toBe("pitch bend");
+        expect(types_1.MessageTypeName.pitch).toBe("pitchBend");
+    });
+});
+describe("names from message type enums", () => {
+    test("names", () => {
+        const messageType = types_1.MessageType.cc;
+        expect(index_1.getNameFromType(messageType)).toBe("controlChange");
     });
 });
 describe("bytes to message payloads", () => {
@@ -31,7 +37,7 @@ describe("bytes to message payloads", () => {
         const bytes = [144, 60, 105];
         const messageType = index_1.getMessageType(bytes);
         expect(messageType).toBe(types_1.MessageType.noteOn);
-        expect(types_1.MessageTypeName.noteOn).toBe("note on");
+        expect(types_1.MessageTypeName.noteOn).toBe("noteOn");
         const n = index_1.getNote(bytes);
         expect(n.note).toBe(60); // middle C
         expect(n.velocity).toBe(105);
@@ -42,12 +48,31 @@ describe("bytes to message payloads", () => {
         const bytes = [128, 60, 47];
         const messageType = index_1.getMessageType(bytes);
         expect(messageType).toBe(types_1.MessageType.noteOff);
-        expect(types_1.MessageTypeName.noteOff).toBe("note off");
+        expect(types_1.MessageTypeName.noteOff).toBe("noteOff");
         const n = index_1.getNote(bytes);
         expect(n.note).toBe(60); // middle C
         expect(n.velocity).toBe(47);
         expect(n.channel).toBeDefined();
         expect(n.channel).toBe(0);
+    });
+    test("control change controller 7 channel 0", () => {
+        const bytes = [176, 7, 96];
+        const messageType = index_1.getMessageType(bytes);
+        expect(messageType).toBe(types_1.MessageType.cc);
+        const c = index_1.getControlChange(bytes);
+        expect(c.channel).toBe(0);
+        expect(c.controller).toBe(7);
+        expect(c.value).toBe(96);
+    });
+});
+describe("message events", () => {
+    test("note message", () => {
+        const bytes = [128, 60, 47];
+        const messageType = index_1.getMessageType(bytes);
+        expect(messageType).toBe(types_1.MessageType.noteOff);
+        expect(types_1.MessageTypeName.noteOff).toBe("noteOff");
+        const e = index_1.getMessageEvent(messageType, bytes);
+        expect(e.name).toBe("noteOff");
     });
 });
 //# sourceMappingURL=index.test.js.map

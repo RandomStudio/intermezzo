@@ -10,26 +10,6 @@ var MessageType;
     MessageType[MessageType["channelAftertouch"] = 13] = "channelAftertouch";
     MessageType[MessageType["pitch"] = 14] = "pitch";
 })(MessageType = exports.MessageType || (exports.MessageType = {}));
-var MessageTypeName;
-(function (MessageTypeName) {
-    MessageTypeName["noteOff"] = "note off";
-    MessageTypeName["noteOn"] = "note on";
-    MessageTypeName["polyAftertouch"] = "poly aftertouch";
-    MessageTypeName["cc"] = "control change";
-    MessageTypeName["program"] = "program";
-    MessageTypeName["channelAftertouch"] = "channel aftertouch";
-    MessageTypeName["pitch"] = "pitch bend";
-    MessageTypeName["sysex"] = "system exclusive";
-    MessageTypeName["mtc"] = "MIDI time code";
-    MessageTypeName["position"] = "song position pointer";
-    MessageTypeName["select"] = "song select";
-    MessageTypeName["sysexEnd"] = "terminate system exclusive dump";
-    MessageTypeName["clock"] = "timing clock";
-    MessageTypeName["start"] = "start current sequence";
-    MessageTypeName["continue"] = "continue sequence";
-    MessageTypeName["stop"] = "stop current sequence";
-    MessageTypeName["reset"] = "reset all receivers";
-})(MessageTypeName = exports.MessageTypeName || (exports.MessageTypeName = {}));
 var ExtendedType;
 (function (ExtendedType) {
     ExtendedType[ExtendedType["sysex"] = 240] = "sysex";
@@ -44,4 +24,25 @@ var ExtendedType;
     ExtendedType[ExtendedType["stop"] = 252] = "stop";
     ExtendedType[ExtendedType["reset"] = 255] = "reset";
 })(ExtendedType = exports.ExtendedType || (exports.ExtendedType = {}));
+// https://users.cs.cf.ac.uk/Dave.Marshall/Multimedia/node158.html
+var MessageTypeName;
+(function (MessageTypeName) {
+    MessageTypeName["noteOff"] = "noteOff";
+    MessageTypeName["noteOn"] = "noteOn";
+    MessageTypeName["polyAftertouch"] = "polyphonicKeyPressure";
+    MessageTypeName["cc"] = "controlChange";
+    MessageTypeName["program"] = "programChange";
+    MessageTypeName["channelAftertouch"] = "channelPressure";
+    MessageTypeName["pitch"] = "pitchBend";
+    MessageTypeName["sysex"] = "systemExclusive";
+    MessageTypeName["mtc"] = "timeCode";
+    MessageTypeName["position"] = "songPositionPointer";
+    MessageTypeName["select"] = "songSelect";
+    MessageTypeName["sysexEnd"] = "terminateSystemExclusiveDump";
+    MessageTypeName["clock"] = "timingClock";
+    MessageTypeName["start"] = "startCurrentSequence";
+    MessageTypeName["continue"] = "continueSequence";
+    MessageTypeName["stop"] = "stopCurrentSequence";
+    MessageTypeName["reset"] = "resetAllReceivers";
+})(MessageTypeName = exports.MessageTypeName || (exports.MessageTypeName = {}));
 //# sourceMappingURL=types.js.map

@@ -15,6 +15,16 @@ export interface NoteMessage {
     velocity: number;
     channel: number;
 }
+export interface ControlChangeMessage {
+    controller: number;
+    channel: number;
+    value: number;
+}
+export declare type PayloadType = RawMessage | NoteMessage | ControlChangeMessage;
+export interface MidiMessageEvent {
+    name: MessageTypeName;
+    payload: PayloadType;
+}
 export declare enum MessageType {
     noteOff = 8,
     noteOn = 9,
@@ -23,25 +33,6 @@ export declare enum MessageType {
     program = 12,
     channelAftertouch = 13,
     pitch = 14
-}
-export declare enum MessageTypeName {
-    noteOff = "note off",
-    noteOn = "note on",
-    polyAftertouch = "poly aftertouch",
-    cc = "control change",
-    program = "program",
-    channelAftertouch = "channel aftertouch",
-    pitch = "pitch bend",
-    sysex = "system exclusive",
-    mtc = "MIDI time code",
-    position = "song position pointer",
-    select = "song select",
-    sysexEnd = "terminate system exclusive dump",
-    clock = "timing clock",
-    start = "start current sequence",
-    continue = "continue sequence",
-    stop = "stop current sequence",
-    reset = "reset all receivers"
 }
 export declare enum ExtendedType {
     sysex = 240,
@@ -55,6 +46,25 @@ export declare enum ExtendedType {
     continue = 251,
     stop = 252,
     reset = 255
+}
+export declare enum MessageTypeName {
+    noteOff = "noteOff",
+    noteOn = "noteOn",
+    polyAftertouch = "polyphonicKeyPressure",
+    cc = "controlChange",
+    program = "programChange",
+    channelAftertouch = "channelPressure",
+    pitch = "pitchBend",
+    sysex = "systemExclusive",
+    mtc = "timeCode",
+    position = "songPositionPointer",
+    select = "songSelect",
+    sysexEnd = "terminateSystemExclusiveDump",
+    clock = "timingClock",
+    start = "startCurrentSequence",
+    continue = "continueSequence",
+    stop = "stopCurrentSequence",
+    reset = "resetAllReceivers"
 }
 export interface MidiMessage {
     type: MessageType | ExtendedType;
