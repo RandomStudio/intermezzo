@@ -10,6 +10,9 @@
     "list": "node utils/list.js",
     "test": "npx jest"
   },
+  "bin": {
+    "midi-list": "bin/list.js"
+  },
   "author": "Stephen Buchanan",
   "license": "ISC",
   "dependencies": {
