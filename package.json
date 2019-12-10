@@ -9,7 +9,7 @@
     "test": "npx jest"
   },
   "author": "Stephen Buchanan",
-  "license": "MIT",
+  "license": "ISC",
   "dependencies": {
     "log4js": "^6.1.0",
     "midi": "^1.0.0"
