@@ -50,6 +50,8 @@ export class Output extends EventEmitter {
 
   public send = (name: MessageTypeName, payload: ValidPayloadTypes) => {
     logger.debug("request to send", name, payload);
+    const bytes = messageToBytes({ name, payload });
+    this.midi.sendMessage(bytes);
   };
 }
 
