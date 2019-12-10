@@ -1,4 +1,6 @@
-const { Input, Output } = require("../dist");
+const { Input, Output, setLoglevel } = require("../dist");
+
+setLoglevel("debug");
 
 console.log("starting example...");
 

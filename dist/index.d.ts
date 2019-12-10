@@ -12,4 +12,5 @@ export declare const getControlChange: (bytes: number[]) => ControlChangeMessage
 export declare const getChannel: (bytes: number[]) => number;
 export declare const matchByName: (midiInterface: any, name: string, exact?: boolean) => MidiDevice;
 export declare const listPorts: (midiInterface: any) => MidiDevice[];
+export declare const setLoglevel: (level: "error" | "info" | "trace" | "debug" | "warn") => void;
 export declare const isExtendedType: (bytes: number[]) => boolean;

@@ -74,5 +74,18 @@ describe("message events", () => {
         const e = index_1.getMessageEvent(messageType, bytes);
         expect(e.name).toBe("noteOff");
     });
+    test("control change message", () => {
+        const bytes = [177, 7, 83];
+        const messageType = index_1.getMessageType(bytes);
+        expect(messageType).toBe(types_1.MessageType.controlChange);
+        const e = index_1.getMessageEvent(messageType, bytes);
+        expect(e.name).toBe("controlChange");
+        // tslint:disable-next-line: no-string-literal
+        expect(e.payload["controller"]).toBe(7);
+        // tslint:disable-next-line: no-string-literal
+        expect(e.payload["value"]).toBe(83);
+        // tslint:disable-next-line: no-string-literal
+        expect(e.payload["velocity"]).toBeUndefined();
+    });
 });
 //# sourceMappingURL=index.test.js.map

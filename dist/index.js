@@ -2,11 +2,18 @@
 function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const log4js_1 = require("log4js");
+const rc_1 = __importDefault(require("rc"));
+const parse_strings_in_object_1 = __importDefault(require("parse-strings-in-object"));
 const types_1 = require("./types");
-exports.logger = log4js_1.getLogger("node-midi-ts");
-exports.logger.level = "debug";
+const defaults_1 = __importDefault(require("./config/defaults"));
+const config = parse_strings_in_object_1.default(rc_1.default("prestissimo", defaults_1.default));
+exports.logger = log4js_1.getLogger("prestissimo");
+exports.logger.level = config.loglevel;
 __export(require("./Input"));
 __export(require("./Output"));
 exports.findMatch = (midiInterface, filter) => filter.name !== undefined
@@ -74,6 +81,9 @@ exports.listPorts = (midiInterface) => {
             name
         };
     });
+};
+exports.setLoglevel = (level) => {
+    exports.logger.level = level;
 };
 exports.isExtendedType = (bytes) => bytes[0] >= 0xf0;
 //# sourceMappingURL=index.js.map

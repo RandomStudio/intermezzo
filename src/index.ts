@@ -1,5 +1,9 @@
+// External modules
 import midi from "midi";
 import { getLogger } from "log4js";
+import rc from "rc";
+import parse from "parse-strings-in-object";
+
 import {
   MidiDevice,
   DeviceFilter,
@@ -12,8 +16,13 @@ import {
   MessageTypeName
 } from "./types";
 
-export const logger = getLogger("node-midi-ts");
-logger.level = "debug";
+import defaults from "./config/defaults";
+import { Config } from "./config/types";
+
+const config: Config = parse(rc("prestissimo", defaults));
+
+export const logger = getLogger("prestissimo");
+logger.level = config.loglevel;
 
 export * from "./Input";
 export * from "./Output";
@@ -109,6 +118,12 @@ export const listPorts = (
       name
     };
   });
+};
+
+export const setLoglevel = (
+  level: "trace" | "debug" | "info" | "warn" | "error"
+) => {
+  logger.level = level;
 };
 
 export const isExtendedType = (bytes: number[]) => bytes[0] >= 0xf0;
