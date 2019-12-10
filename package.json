@@ -1,6 +1,6 @@
 {
   "name": "prestissimo",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Ergonomic wrapper for node-midi, powered by TypeScript",
   "main": "dist/index.js",
   "scripts": {
@@ -25,5 +25,11 @@
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.7.3"
-  }
+  },
+  "keywords": [
+    "midi",
+    "music",
+    "nodejs",
+    "hardware"
+  ]
 }
