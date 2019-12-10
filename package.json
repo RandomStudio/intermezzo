@@ -1,5 +1,5 @@
 {
-  "name": "intermezzo",
+  "name": "prestissimo",
   "version": "0.1.0",
   "description": "Ergonomic wrapper for node-midi, powered by TypeScript",
   "main": "dist/index.js",
