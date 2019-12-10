@@ -37,7 +37,7 @@ export enum MessageType {
   noteOff = 0x08,
   noteOn = 0x09,
   polyAftertouch = 0x0a,
-  cc = 0x0b,
+  controlChange = 0x0b,
   program = 0x0c,
   channelAftertouch = 0x0d,
   pitch = 0x0e
@@ -62,7 +62,7 @@ export enum MessageTypeName {
   noteOff = "noteOff",
   noteOn = "noteOn",
   polyAftertouch = "polyphonicKeyPressure",
-  cc = "controlChange",
+  controlChange = "controlChange",
   program = "programChange",
   channelAftertouch = "channelPressure",
   pitch = "pitchBend",
