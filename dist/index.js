@@ -8,6 +8,7 @@ const types_1 = require("./types");
 exports.logger = log4js_1.getLogger("node-midi-ts");
 exports.logger.level = "debug";
 __export(require("./Input"));
+__export(require("./Output"));
 exports.findMatch = (midiInterface, filter) => filter.name !== undefined
     ? exports.matchByName(midiInterface, filter.name)
     : exports.listPorts(midiInterface)[filter.port];
@@ -28,7 +29,7 @@ exports.getMessageEvent = (messageType, bytes) => {
 exports.getNameFromType = (messageType) => types_1.MessageTypeName[types_1.MessageType[messageType]];
 exports.getNameFromExtendedType = (messageType) => types_1.MessageTypeName[types_1.ExtendedType[messageType]];
 exports.getMessageType = (bytes) => {
-    if (bytes[0] >= 0xf0) {
+    if (exports.isExtendedType(bytes)) {
         const name = types_1.ExtendedType[bytes[0]];
         return types_1.ExtendedType[name];
     }
@@ -68,4 +69,5 @@ exports.listPorts = (midiInterface) => {
         };
     });
 };
+exports.isExtendedType = (bytes) => bytes[0] >= 0xf0;
 //# sourceMappingURL=index.js.map

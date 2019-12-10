@@ -1,6 +1,7 @@
 import { MidiDevice, DeviceFilter, ExtendedType, MessageType, NoteMessage, ControlChangeMessage, MidiMessageEvent, MessageTypeName } from "./types";
 export declare const logger: import("log4js").Logger;
 export * from "./Input";
+export * from "./Output";
 export declare const findMatch: (midiInterface: any, filter: DeviceFilter) => MidiDevice;
 export declare const getMessageEvent: (messageType: MessageType | ExtendedType, bytes: number[]) => MidiMessageEvent;
 export declare const getNameFromType: (messageType: MessageType) => MessageTypeName;
@@ -11,3 +12,4 @@ export declare const getControlChange: (bytes: number[]) => ControlChangeMessage
 export declare const getChannel: (bytes: number[]) => number;
 export declare const matchByName: (midiInterface: any, name: string, exact?: boolean) => MidiDevice;
 export declare const listPorts: (midiInterface: any) => MidiDevice[];
+export declare const isExtendedType: (bytes: number[]) => boolean;

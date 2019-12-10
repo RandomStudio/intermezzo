@@ -7,6 +7,7 @@ export interface DeviceFilter {
     port?: number;
 }
 export interface RawMessage {
+    deviceName: string;
     deltaTime: number;
     bytes: number[];
 }
@@ -20,10 +21,10 @@ export interface ControlChangeMessage {
     channel: number;
     value: number;
 }
-export declare type PayloadType = RawMessage | NoteMessage | ControlChangeMessage;
+export declare type ValidPayloadTypes = RawMessage | NoteMessage | ControlChangeMessage;
 export interface MidiMessageEvent {
     name: MessageTypeName;
-    payload: PayloadType;
+    payload: ValidPayloadTypes;
 }
 export declare enum MessageType {
     noteOff = 8,
