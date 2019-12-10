@@ -1,6 +1,5 @@
 import midi from "midi";
 import { getLogger } from "log4js";
-import { EventEmitter } from "events";
 import {
   MidiDevice,
   DeviceFilter,
@@ -13,59 +12,18 @@ import {
   MessageTypeName
 } from "./types";
 
-const logger = getLogger("node-midi-ts");
+export const logger = getLogger("node-midi-ts");
 logger.level = "debug";
 
-export class Input extends EventEmitter {
-  private midi: typeof midi.Input;
+export * from "./Input";
 
-  constructor(filter: DeviceFilter, virtual = false) {
-    super();
-    this.midi = new midi.input();
-    const { name, port } = filter;
-    if (virtual) {
-      // TODO: create virtual input
-    } else {
-      if (name === undefined && port === undefined) {
-        throw Error("you must define either a name or a portNumber");
-      }
-
-      const match =
-        name !== undefined
-          ? findMatch(this.midi, name)
-          : listPorts(this.midi)[port];
-
-      if (match === undefined) {
-        logger.error("could not find MIDI device matching filter", {
-          name,
-          port
-        });
-        throw Error("could not find midi device");
-      }
-
-      logger.info("found matching MIDI device:", match);
-
-      this.midi.openPort(match.port);
-      setTimeout(() => {
-        this.emit("ready", match);
-      });
-
-      this.midi.on("message", this.handleMessage);
-    }
-  }
-
-  private handleMessage = (deltaTime: number, bytes: number[]) => {
-    logger.debug("handleMessage:", deltaTime, bytes);
-    const rawPayload: RawMessage = { deltaTime, bytes };
-    this.emit("rawMessage", rawPayload);
-
-    const messageType = getMessageType(bytes);
-
-    const e: MidiMessageEvent = getMessageEvent(messageType, bytes);
-
-    this.emit(e.name, e.payload);
-  };
-}
+export const findMatch = (
+  midiInterface: typeof midi.Input | typeof midi.Output,
+  filter: DeviceFilter
+): MidiDevice =>
+  filter.name !== undefined
+    ? matchByName(midiInterface, filter.name)
+    : listPorts(midiInterface)[filter.port];
 
 export const getMessageEvent = (
   messageType: MessageType | ExtendedType,
@@ -116,7 +74,7 @@ export const getControlChange = (bytes: number[]): ControlChangeMessage => ({
 
 export const getChannel = (bytes: number[]): number => bytes[0] & 0xf;
 
-export const findMatch = (
+export const matchByName = (
   midiInterface: typeof midi.Input | typeof midi.Output,
   name: string,
   exact = false
