@@ -19,6 +19,12 @@ export interface NoteMessage {
   channel: number;
 }
 
+export interface ControlChangeMessage {
+  controller: number;
+  channel: number;
+  value: number;
+}
+
 export enum MessageType {
   noteOff = 0x08,
   noteOn = 0x09,
@@ -29,13 +35,14 @@ export enum MessageType {
   pitch = 0x0e
 }
 
+// https://users.cs.cf.ac.uk/Dave.Marshall/Multimedia/node158.html
 export enum MessageTypeName {
   noteOff = "note off",
   noteOn = "note on",
-  polyAftertouch = "poly aftertouch",
+  polyAftertouch = "polyphonic key pressure",
   cc = "control change",
-  program = "program",
-  channelAftertouch = "channel aftertouch",
+  program = "program change",
+  channelAftertouch = "channel pressure",
   pitch = "pitch bend",
   sysex = "system exclusive",
   mtc = "MIDI time code",
