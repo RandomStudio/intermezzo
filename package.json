@@ -1,6 +1,6 @@
 {
   "name": "prestissimo",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Ergonomic wrapper for node-midi, powered by TypeScript",
   "main": "dist/index.js",
   "scripts": {
