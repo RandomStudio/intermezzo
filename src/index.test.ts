@@ -1,9 +1,16 @@
-import { getMessageType, getNote, getControlChange } from "./index";
+import {
+  getMessageType,
+  getNote,
+  getControlChange,
+  getMessageEvent,
+  getNameFromType
+} from "./index";
 import {
   MessageType,
   MessageTypeName,
   NoteMessage,
-  ControlChangeMessage
+  ControlChangeMessage,
+  MidiMessageEvent
 } from "./types";
 
 describe("convert types properly from first byte of message", () => {
@@ -12,7 +19,7 @@ describe("convert types properly from first byte of message", () => {
     const messageType = getMessageType(bytes);
 
     expect(messageType).toBe(MessageType.cc);
-    expect(MessageTypeName.cc).toBe("control change");
+    expect(MessageTypeName.cc).toBe("controlChange");
   });
 
   test("note on messages", () => {
@@ -25,7 +32,7 @@ describe("convert types properly from first byte of message", () => {
     const messageType = getMessageType(bytes);
 
     expect(messageType).toBe(MessageType.noteOff);
-    expect(MessageTypeName.noteOff).toBe("note off");
+    expect(MessageTypeName.noteOff).toBe("noteOff");
   });
 
   test("pitch bend messages", () => {
@@ -33,7 +40,14 @@ describe("convert types properly from first byte of message", () => {
     const messageType = getMessageType(bytes);
 
     expect(messageType).toBe(MessageType.pitch);
-    expect(MessageTypeName.pitch).toBe("pitch bend");
+    expect(MessageTypeName.pitch).toBe("pitchBend");
+  });
+});
+
+describe("names from message type enums", () => {
+  test("names", () => {
+    const messageType = MessageType.cc;
+    expect(getNameFromType(messageType)).toBe("controlChange");
   });
 });
 
@@ -43,7 +57,7 @@ describe("bytes to message payloads", () => {
     const messageType = getMessageType(bytes);
 
     expect(messageType).toBe(MessageType.noteOn);
-    expect(MessageTypeName.noteOn).toBe("note on");
+    expect(MessageTypeName.noteOn).toBe("noteOn");
 
     const n: NoteMessage = getNote(bytes);
     expect(n.note).toBe(60); // middle C
@@ -57,7 +71,7 @@ describe("bytes to message payloads", () => {
     const messageType = getMessageType(bytes);
 
     expect(messageType).toBe(MessageType.noteOff);
-    expect(MessageTypeName.noteOff).toBe("note off");
+    expect(MessageTypeName.noteOff).toBe("noteOff");
 
     const n: NoteMessage = getNote(bytes);
     expect(n.note).toBe(60); // middle C
@@ -76,5 +90,18 @@ describe("bytes to message payloads", () => {
     expect(c.channel).toBe(0);
     expect(c.controller).toBe(7);
     expect(c.value).toBe(96);
+  });
+});
+
+describe("message events", () => {
+  test("note message", () => {
+    const bytes = [128, 60, 47];
+    const messageType = getMessageType(bytes);
+
+    expect(messageType).toBe(MessageType.noteOff);
+    expect(MessageTypeName.noteOff).toBe("noteOff");
+
+    const e: MidiMessageEvent = getMessageEvent(messageType, bytes);
+    expect(e.name).toBe("noteOff");
   });
 });

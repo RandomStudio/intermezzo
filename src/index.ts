@@ -8,7 +8,9 @@ import {
   MessageType,
   RawMessage,
   NoteMessage,
-  ControlChangeMessage
+  ControlChangeMessage,
+  MidiMessageEvent,
+  MessageTypeName
 } from "./types";
 
 const logger = getLogger("node-midi-ts");
@@ -59,17 +61,36 @@ export class Input extends EventEmitter {
 
     const messageType = getMessageType(bytes);
 
-    switch (messageType) {
-      case MessageType.noteOn:
-      case MessageType.noteOff:
-        const note: NoteMessage = getNote(bytes);
-        this.emit(
-          messageType === MessageType.noteOn ? "noteOn" : "noteOff",
-          note
-        );
-    }
+    const e: MidiMessageEvent = getMessageEvent(messageType, bytes);
+
+    this.emit(e.name, e.payload);
   };
 }
+
+export const getMessageEvent = (
+  messageType: MessageType | ExtendedType,
+  bytes: number[]
+): MidiMessageEvent => {
+  switch (messageType) {
+    case MessageType.noteOn:
+    case MessageType.noteOff:
+      const note: NoteMessage = getNote(bytes);
+      return {
+        name: getNameFromType(messageType),
+        payload: note
+      };
+    default:
+      logger.warn("unknown message type");
+      return null;
+  }
+};
+
+export const getNameFromType = (messageType: MessageType): MessageTypeName =>
+  MessageTypeName[MessageType[messageType]];
+
+export const getNameFromExtendedType = (
+  messageType: ExtendedType
+): MessageTypeName => MessageTypeName[ExtendedType[messageType]];
 
 export const getMessageType = (bytes: number[]): MessageType | ExtendedType => {
   if (bytes[0] >= 0xf0) {

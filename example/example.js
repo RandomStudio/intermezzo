@@ -13,3 +13,11 @@ input.on("ready", match => {
 input.on("rawMessage", e => {
   console.log("rawMessage:", e);
 });
+
+input.on("noteOn", e => {
+  console.log("noteOn:", e);
+});
+
+input.on("noteOff", e => {
+  console.log("noteOff:", e);
+});
