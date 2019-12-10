@@ -1,6 +1,6 @@
 {
   "name": "prestissimo",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Ergonomic wrapper for node-midi, powered by TypeScript",
   "main": "dist/index.js",
   "scripts": {
@@ -13,6 +13,7 @@
   "bin": {
     "midi-list": "bin/list.js"
   },
+  "repository": "https://github.com/RandomStudio/prestissimo",
   "author": "Stephen Buchanan",
   "license": "ISC",
   "dependencies": {
