@@ -1,5 +1,4 @@
 import midi from "midi";
-import { EventEmitter } from "events";
 import {
   ValidPayloadTypes,
   MessageTypeName,
@@ -7,14 +6,15 @@ import {
   MessageType,
   ControlChangeMessage,
   NoteMessage,
-  MidiDevice,
-  DeviceDescription
+  MidiDeviceDetails,
+  DeviceDescription,
 } from "../types";
-import { findMatch, logger, BaseMidiDevice } from "../";
+import { findMatch, logger } from "../";
+import { BaseMidiDevice } from "../BaseDevice";
 
-export class Output extends BaseMidiDevice {
+export class BaseOutputDevice extends BaseMidiDevice {
   protected midi: typeof midi.Input;
-  protected device: MidiDevice;
+  protected device: MidiDeviceDetails;
 
   constructor(description: DeviceDescription, virtual = false) {
     super();
@@ -37,7 +37,7 @@ export class Output extends BaseMidiDevice {
       if (match === undefined) {
         logger.error("could not find MIDI device matching filter", {
           name,
-          port
+          port,
         });
         throw Error("could not find midi device");
       }

@@ -1,7 +1,7 @@
-import { Output } from "./Output";
+import { BaseOutputDevice } from ".";
 import { DeviceDescription } from "../types";
 
-export class OutputDevice extends Output {
+export class HardwareOutput extends BaseOutputDevice {
   constructor(filter: DeviceDescription) {
     super(filter, false);
   }

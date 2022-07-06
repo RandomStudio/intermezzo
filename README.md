@@ -4,7 +4,7 @@ Making MIDI interfacing with NodeJS even easier. Quick, quicker... [prestissimo]
 
 Depends on [node-midi](https://github.com/justinlatimer/node-midi) - excellent for the low-level interface, but not particularly easy to use. Also inspired by [easymidi](https://github.com/dinchak/node-easymidi) which works well but lacks TypeScript support and some other conveniences.
 
-## Beta functionality
+## Functionality
 
 This module currently only supports input/output for the following types of MIDI messages:
 
@@ -14,7 +14,6 @@ This module currently only supports input/output for the following types of MIDI
 
 It does not (yet) support
 
-- creating virtual inputs and outputs
 - pitch bend, sysex messages, etc.
 
 ## Install and import
@@ -26,13 +25,13 @@ npm install prestissimo
 Import into Node Javascript:
 
 ```
-const { Input, Output } = require('prestissimo');
+const { InputMidiDevice, OutputMidiDevice } = require('prestissimo');
 ```
 
 Or in your Typescript application:
 
 ```
-import { Input, Output } from 'prestissimo'
+import { InputMidiDevice, OutputMidiDevice } from 'prestissimo'
 ```
 
 Either way, if you're using an editor that understands Typescript definitions (e.g. VS Code), you will get handy hints for function parameters and return types. Nice!
@@ -44,8 +43,8 @@ Either way, if you're using an editor that understands Typescript definitions (e
 Connect a keyboard or some other MIDI device and identify it either by **name** or **port number**. For example:
 
 ```
-const { Input } = require('prestissimo');
-const input = new Input({ name: "Samson Graphite M25" });
+const { InputMidiDevice } = require('prestissimo');
+const input = new InputMidiDevice({ name: "Samson Graphite M25" });
 ```
 
 This will check the list of available MIDI input devices on your system, and pick the one that (at least partially) matches the name "Samson Graphite M25".
@@ -92,8 +91,8 @@ input.on("rawMessage", message => {
 Get a valid output MIDI device by name or port number:
 
 ```
-const { Output } = require('prestissimo');
-const output = new Output({name: "myMidiOutput"})
+const { OutputMidiDevice } = require('prestissimo');
+const output = new OutputMidiDevice({name: "myMidiOutput"})
 ```
 
 Send messages to the device:
@@ -105,6 +104,10 @@ output.send("noteOn", {
   channel: 0
 });
 ```
+
+### Virtual Inputs and Outputs
+
+If you need to create virtual (software-only) MIDI devices on your system, simply create `new VirtualInputDevice` or `new VirtualOutputDevice` and provide a name (as before). These classes extend `InputMidiDevice` and `OutputMidiDevice` so they work in identical ways.
 
 ### Utils
 

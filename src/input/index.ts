@@ -1,14 +1,9 @@
 import midi from "midi";
 import { RawMessage, MidiMessageEvent, DeviceDescription } from "../types";
-import {
-  findMatch,
-  logger,
-  getMessageType,
-  getMessageEvent,
-  BaseMidiDevice
-} from "..";
+import { findMatch, logger, getMessageType, getMessageEvent } from "..";
+import { BaseMidiDevice } from "../BaseDevice";
 
-export class Input extends BaseMidiDevice {
+export class BaseInputDevice extends BaseMidiDevice {
   constructor(description: DeviceDescription, virtual: boolean) {
     super();
     this.midi = new midi.input();
@@ -32,7 +27,7 @@ export class Input extends BaseMidiDevice {
       if (match === undefined) {
         logger.error("could not find MIDI device matching filter", {
           name,
-          port
+          port,
         });
         throw Error("could not find midi device");
       }
@@ -54,7 +49,7 @@ export class Input extends BaseMidiDevice {
     const rawPayload: RawMessage = {
       deltaTime,
       bytes,
-      deviceName: this.device.name
+      deviceName: this.device.name,
     };
     this.emit("rawMessage", rawPayload);
 

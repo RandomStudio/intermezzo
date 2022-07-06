@@ -1,4 +1,4 @@
-export interface MidiDevice {
+export interface MidiDeviceDetails {
   name: string;
   port?: number;
 }
@@ -40,7 +40,7 @@ export enum MessageType {
   controlChange = 0x0b,
   program = 0x0c,
   channelAftertouch = 0x0d,
-  pitch = 0x0e
+  pitch = 0x0e,
 }
 
 export enum ExtendedType {
@@ -54,7 +54,7 @@ export enum ExtendedType {
   start = 0xfa,
   continue = 0xfb,
   stop = 0xfc,
-  reset = 0xff
+  reset = 0xff,
 }
 
 // https://users.cs.cf.ac.uk/Dave.Marshall/Multimedia/node158.html
@@ -75,9 +75,11 @@ export enum MessageTypeName {
   start = "startCurrentSequence",
   continue = "continueSequence",
   stop = "stopCurrentSequence",
-  reset = "resetAllReceivers"
+  reset = "resetAllReceivers",
 }
 
 export interface MidiMessage {
   type: MessageType | ExtendedType;
 }
+
+export { SoftwareOutput } from "./output/SoftwareOutput";

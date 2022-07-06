@@ -1,7 +1,7 @@
-import { Input } from "./Input";
+import { BaseInputDevice } from ".";
 import { DeviceDescription } from "../types";
 
-export class InputDevice extends Input {
+export class HardwareInput extends BaseInputDevice {
   constructor(filter: DeviceDescription) {
     const { name, port } = filter;
     super({ name, port }, false);

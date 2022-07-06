@@ -4,60 +4,37 @@ import { getLogger } from "log4js";
 import rc from "rc";
 import parse from "parse-strings-in-object";
 
-// Internal modules
-import {
-  MidiDevice,
-  ExtendedType,
-  MessageType,
-  NoteMessage,
-  ControlChangeMessage,
-  MidiMessageEvent,
-  MessageTypeName,
-  DeviceDescription
-} from "./types";
-
 // Config
 import defaults from "./config/defaults";
 import { Config } from "./config/types";
-import { EventEmitter } from "events";
 
 const config: Config = parse(rc("prestissimo", defaults));
 
 export const logger = getLogger("prestissimo");
 logger.level = config.loglevel;
 
-// export * from "./input/Input";
-// export * from "./output";
+// Internal modules
+import {
+  MidiDeviceDetails,
+  ExtendedType,
+  MessageType,
+  NoteMessage,
+  ControlChangeMessage,
+  MidiMessageEvent,
+  MessageTypeName,
+  DeviceDescription,
+} from "./types";
 
-export class BaseMidiDevice extends EventEmitter {
-  protected midi: typeof midi.Input;
-  protected device: MidiDevice;
+export { HardwareOutput } from "./output/HardwareOutput";
+export { HardwareInput } from "./input/HardwareInput";
 
-  constructor() {
-    super();
-  }
-
-  public getName = () => this.device.name;
-  public getPort = () => this.device.port;
-  public getDevice = () => this.device;
-
-  public close = () => {
-    logger.info("closing MIDI device", this.device);
-    this.midi.closePort();
-  };
-
-  protected emitReady = () => {
-    logger.info("opened MIDI device", this.device);
-    setTimeout(() => {
-      this.emit("ready", this.device);
-    });
-  };
-}
+export { SoftwareOutput } from "./output/SoftwareOutput";
+export { SoftwareInput } from "./input/SoftwareInput";
 
 export const findMatch = (
   midiInterface: typeof midi.Input | typeof midi.Output,
   filter: DeviceDescription
-): MidiDevice =>
+): MidiDeviceDetails =>
   filter.name === undefined
     ? listPorts(midiInterface)[filter.port]
     : matchByName(midiInterface, filter.name);
@@ -72,13 +49,13 @@ export const getMessageEvent = (
       const note: NoteMessage = getNote(bytes);
       return {
         name: getNameFromType(messageType),
-        payload: note
+        payload: note,
       };
     case MessageType.controlChange:
       const c: ControlChangeMessage = getControlChange(bytes);
       return {
         name: getNameFromType(messageType),
-        payload: c
+        payload: c,
       };
     default:
       logger.warn("unknown message type");
@@ -106,13 +83,13 @@ export const getMessageType = (bytes: number[]): MessageType | ExtendedType => {
 export const getNote = (bytes: number[]): NoteMessage => ({
   channel: getChannel(bytes),
   note: bytes[1],
-  velocity: bytes[2]
+  velocity: bytes[2],
 });
 
 export const getControlChange = (bytes: number[]): ControlChangeMessage => ({
   channel: getChannel(bytes),
   controller: bytes[1],
-  value: bytes[2]
+  value: bytes[2],
 });
 
 export const getChannel = (bytes: number[]): number => bytes[0] & 0xf;
@@ -121,28 +98,28 @@ export const matchByName = (
   midiInterface: typeof midi.Input | typeof midi.Output,
   name: string,
   exact = false
-): MidiDevice => {
+): MidiDeviceDetails => {
   const ports = listPorts(midiInterface);
   return exact
-    ? ports.find(i => i.name === name)
-    : ports.find(i => i.name.includes(name));
+    ? ports.find((i) => i.name === name)
+    : ports.find((i) => i.name.includes(name));
 };
 
 export const listPorts = (
   midiInterface: typeof midi.Input | typeof midi.Output
-): MidiDevice[] => {
+): MidiDeviceDetails[] => {
   const numInputs = midiInterface.getPortCount();
 
   const portNumbers = Array(numInputs)
     .fill(0)
     .map((i, index) => index);
 
-  return portNumbers.map(i => {
+  return portNumbers.map((i) => {
     const name = midiInterface.getPortName(i);
     logger.debug(`device #${i} = ${name}`);
     return {
       port: i,
-      name
+      name,
     };
   });
 };
