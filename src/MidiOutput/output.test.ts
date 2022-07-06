@@ -1,5 +1,5 @@
 import { MidiMessageEvent, MessageTypeName } from "../types";
-import { messageToBytes } from ".";
+import { messageToBytes } from "./BaseOutputDevice";
 import { SoftwareOutput } from "./SoftwareOutput";
 
 describe("virtual outputs", () => {

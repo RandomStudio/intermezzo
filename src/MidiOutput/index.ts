@@ -9,12 +9,13 @@ import {
   MidiDeviceDetails,
   DeviceDescription,
 } from "../types";
-import { findMatch, logger } from "../";
+import { logger } from "..";
 import { BaseMidiDevice } from "../BaseDevice";
+import { findMatch } from "../utils";
 
-export class BaseOutputDevice extends BaseMidiDevice {
+export class MidiOutput extends BaseMidiDevice {
   protected midi: typeof midi.Input;
-  protected device: MidiDeviceDetails;
+  protected deviceDetails: MidiDeviceDetails;
 
   constructor(description: DeviceDescription, virtual = false) {
     super();
@@ -23,7 +24,7 @@ export class BaseOutputDevice extends BaseMidiDevice {
     const { name, port } = description;
     if (virtual) {
       this.midi.openVirtualPort(name);
-      this.device = { name };
+      this.deviceDetails = { name };
       this.emitReady();
     } else {
       if (name === undefined && port === undefined) {
@@ -42,7 +43,7 @@ export class BaseOutputDevice extends BaseMidiDevice {
         throw Error("could not find midi device");
       }
 
-      this.device = match;
+      this.deviceDetails = match;
 
       logger.info("found matching MIDI device:", match);
 
@@ -57,10 +58,10 @@ export class BaseOutputDevice extends BaseMidiDevice {
     this.midi.sendMessage(bytes);
   };
 
-  public getName = () => this.device.name;
-  public getPort = () => this.device.port;
+  public getName = () => this.deviceDetails.name;
+  public getPort = () => this.deviceDetails.port;
 
-  public getDevice = () => this.device;
+  public getDevice = () => this.deviceDetails;
 }
 
 export const messageToBytes = (msg: MidiMessageEvent): number[] => {

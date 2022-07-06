@@ -1,4 +1,4 @@
-const { HardwareInput, SoftwareOutput, setLoglevel } = require("../dist");
+const { setLoglevel, findInput, createOutput } = require("../dist");
 
 setLoglevel("debug");
 
@@ -6,9 +6,9 @@ console.log("starting example...");
 
 // const input = new HardwareInput({ port: 1 });
 // const input = new Input("bla"); // throws error
-const input = new HardwareInput({ name: "Samson Graphite M25" });
+const input = findInput({ name: "Samson Graphite M25" });
 
-const output = new SoftwareOutput({ name: "virtualmidi" });
+const output = createOutput({ name: "VirtualMidiOutputDevice" });
 
 input.on("ready", (match) => {
   console.log("ready:", match);

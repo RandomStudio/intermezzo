@@ -4,26 +4,26 @@ import midi from "midi";
 import { logger } from ".";
 
 export class BaseMidiDevice extends EventEmitter {
-  protected midi: typeof midi.Input;
-  protected device: MidiDeviceDetails;
+  protected midi: typeof midi.Input | typeof midi.Output;
+  protected deviceDetails: MidiDeviceDetails;
 
   constructor() {
     super();
   }
 
-  public getName = () => this.device.name;
-  public getPort = () => this.device.port;
-  public getDevice = () => this.device;
+  public getName = () => this.deviceDetails.name;
+  public getPort = () => this.deviceDetails.port;
+  public getDevice = () => this.deviceDetails;
 
   public close = () => {
-    logger.info("closing MIDI device", this.device);
+    logger.info("closing MIDI device", this.deviceDetails);
     this.midi.closePort();
   };
 
   protected emitReady = () => {
-    logger.info("opened MIDI device", this.device);
+    logger.info("opened MIDI device", this.deviceDetails);
     setTimeout(() => {
-      this.emit("ready", this.device);
+      this.emit("ready", this.deviceDetails);
     });
   };
 }

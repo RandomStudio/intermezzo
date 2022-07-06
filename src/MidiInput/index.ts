@@ -1,9 +1,10 @@
 import midi from "midi";
 import { RawMessage, MidiMessageEvent, DeviceDescription } from "../types";
-import { findMatch, logger, getMessageType, getMessageEvent } from "..";
 import { BaseMidiDevice } from "../BaseDevice";
+import { logger } from "..";
+import { findMatch, getMessageEvent, getMessageType } from "../utils";
 
-export class BaseInputDevice extends BaseMidiDevice {
+export class MidiInput extends BaseMidiDevice {
   constructor(description: DeviceDescription, virtual: boolean) {
     super();
     this.midi = new midi.input();
@@ -13,7 +14,7 @@ export class BaseInputDevice extends BaseMidiDevice {
         throw Error("you must define a name for a virtual MIDI Input Device");
       }
       this.midi.openVirtualPort(name);
-      this.device = { name, port };
+      this.deviceDetails = { name, port };
       this.emitReady();
     } else {
       if (name === undefined && port === undefined) {
@@ -32,7 +33,7 @@ export class BaseInputDevice extends BaseMidiDevice {
         throw Error("could not find midi device");
       }
 
-      this.device = match;
+      this.deviceDetails = match;
 
       logger.info("found matching MIDI device:", match);
 
@@ -49,7 +50,7 @@ export class BaseInputDevice extends BaseMidiDevice {
     const rawPayload: RawMessage = {
       deltaTime,
       bytes,
-      deviceName: this.device.name,
+      deviceName: this.deviceDetails.name,
     };
     this.emit("rawMessage", rawPayload);
 

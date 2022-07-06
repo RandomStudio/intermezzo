@@ -81,5 +81,3 @@ export enum MessageTypeName {
 export interface MidiMessage {
   type: MessageType | ExtendedType;
 }
-
-export { SoftwareOutput } from "./output/SoftwareOutput";
