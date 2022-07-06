@@ -25,13 +25,13 @@ npm install prestissimo
 Import into Node Javascript:
 
 ```
-const { InputMidiDevice, OutputMidiDevice } = require('prestissimo');
+const { findInput, findOutput } = require('prestissimo');
 ```
 
 Or in your Typescript application:
 
 ```
-import { InputMidiDevice, OutputMidiDevice } from 'prestissimo'
+import {  findInput, findOutput } from 'prestissimo'
 ```
 
 Either way, if you're using an editor that understands Typescript definitions (e.g. VS Code), you will get handy hints for function parameters and return types. Nice!
@@ -40,11 +40,11 @@ Either way, if you're using an editor that understands Typescript definitions (e
 
 ### Input
 
-Connect a keyboard or some other MIDI device and identify it either by **name** or **port number**. For example:
+Connect a keyboard, controller, pedal or some other MIDI device and identify it either by **name** or **port number**. For example:
 
 ```
-const { InputMidiDevice } = require('prestissimo');
-const input = new InputMidiDevice({ name: "Samson Graphite M25" });
+const { findInput } = require('prestissimo');
+const input = findInput({ name: "Samson Graphite M25" });
 ```
 
 This will check the list of available MIDI input devices on your system, and pick the one that (at least partially) matches the name "Samson Graphite M25".
@@ -91,8 +91,8 @@ input.on("rawMessage", message => {
 Get a valid output MIDI device by name or port number:
 
 ```
-const { OutputMidiDevice } = require('prestissimo');
-const output = new OutputMidiDevice({name: "myMidiOutput"})
+const { findOutput } = require('prestissimo');
+const output = findOutput({name: "myMidiOutput"})
 ```
 
 Send messages to the device:
@@ -107,7 +107,7 @@ output.send("noteOn", {
 
 ### Virtual Inputs and Outputs
 
-If you need to create virtual (software-only) MIDI devices on your system, simply create `new VirtualInputDevice` or `new VirtualOutputDevice` and provide a name (as before). These classes extend `InputMidiDevice` and `OutputMidiDevice` so they work in identical ways.
+If you need to create virtual (software-only) MIDI devices on your system, simply use `createInput` instead of `findInput` and `createOutput` instead of `findOutput`. All other functionality is identical.
 
 ### Utils
 
