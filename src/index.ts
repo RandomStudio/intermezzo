@@ -14,16 +14,7 @@ export const logger = getLogger("prestissimo");
 logger.level = config.loglevel;
 
 // Internal modules
-import {
-  MidiDeviceDetails,
-  ExtendedType,
-  MessageType,
-  NoteMessage,
-  ControlChangeMessage,
-  MidiMessageEvent,
-  MessageTypeName,
-  DeviceDescription,
-} from "./types";
+import { MidiDeviceDetails, DeviceDescription } from "./types";
 import { MidiInput } from "./MidiInput";
 import { MidiOutput } from "./MidiOutput";
 
@@ -41,7 +32,35 @@ export const findInput = (filter: DeviceDescription): MidiInput => {
   }
 };
 
-export const createOutput = (details: MidiDeviceDetails) => {
+export const createInput = (details: MidiDeviceDetails): MidiInput => {
+  try {
+    const midiInput = new MidiInput({ name: details.name }, true);
+    return midiInput;
+  } catch (e) {
+    logger.error(
+      "Error creating (virtual, software) MIDI device with details",
+      { details },
+      ":",
+      e
+    );
+  }
+};
+
+export const findOutput = (filter: DeviceDescription): MidiOutput => {
+  try {
+    const midiOutput = new MidiOutput(filter, false);
+    return midiOutput;
+  } catch (e) {
+    logger.error(
+      "Error finding (hardware) MIDI device with description",
+      { filter },
+      ":",
+      e
+    );
+  }
+};
+
+export const createOutput = (details: MidiDeviceDetails): MidiOutput => {
   try {
     const midiOutput = new MidiOutput({ name: details.name }, true);
     return midiOutput;
