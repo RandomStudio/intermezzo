@@ -1,14 +1,19 @@
-const { setLoglevel, findInput, createOutput } = require("../dist");
+const { setLoglevel, findInput, createVirtualOutput } = require("../dist");
 
 setLoglevel("debug");
 
 console.log("starting example...");
 
 // const input = new HardwareInput({ port: 1 });
-// const input = new Input("bla"); // throws error
+try {
+  const inputError = findInput({ name: "bla" });
+} catch (e) {
+  console.log("Oops, that was an error; oh well");
+  console.log(e);
+}
 const input = findInput({ name: "Samson Graphite M25" });
 
-const output = createOutput({ name: "VirtualMidiOutputDevice" });
+const output = createVirtualOutput({ name: "VirtualMidiOutputDevice" });
 
 input.on("ready", (match) => {
   console.log("ready:", match);

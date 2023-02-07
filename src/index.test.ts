@@ -1,19 +1,18 @@
 import {
-  getMessageType,
-  getNote,
-  getControlChange,
-  getMessageEvent,
-  getNameFromType,
-  findMatch
-} from "./index";
-import {
   MessageType,
   MessageTypeName,
   NoteMessage,
   ControlChangeMessage,
   MidiMessageEvent,
-  DeviceDescription
 } from "./types";
+
+import {
+  getControlChange,
+  getMessageEvent,
+  getMessageType,
+  getNameFromType,
+  getNote,
+} from "./utils";
 
 describe("convert types properly from first byte of message", () => {
   test("control change messages", () => {
@@ -115,11 +114,8 @@ describe("message events", () => {
 
     const e: MidiMessageEvent = getMessageEvent(messageType, bytes);
     expect(e.name).toBe("controlChange");
-    // tslint:disable-next-line: no-string-literal
     expect(e.payload["controller"]).toBe(7);
-    // tslint:disable-next-line: no-string-literal
     expect(e.payload["value"]).toBe(83);
-    // tslint:disable-next-line: no-string-literal
     expect(e.payload["velocity"]).toBeUndefined();
   });
 });

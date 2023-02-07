@@ -23,11 +23,11 @@ export const findInput = (filter: DeviceDescription): MidiInput => {
     const midiInput = new MidiInput(filter, false);
     return midiInput;
   } catch (e) {
-    logger.error(
-      "Error finding (hardware) MIDI device with description",
-      { filter },
-      ":",
-      e
+    throw Error(
+      "Error finding (hardware) MIDI device with description " +
+        JSON.stringify(filter) +
+        "; " +
+        e
     );
   }
 };
@@ -37,11 +37,11 @@ export const createVirtualInput = (details: MidiDeviceDetails): MidiInput => {
     const midiInput = new MidiInput({ name: details.name }, true);
     return midiInput;
   } catch (e) {
-    logger.error(
-      "Error creating (virtual, software) MIDI device with details",
-      { details },
-      ":",
-      e
+    throw Error(
+      "Error creating (virtual, software) MIDI device with details " +
+        JSON.stringify(details) +
+        "; " +
+        e
     );
   }
 };
@@ -51,11 +51,11 @@ export const findOutput = (filter: DeviceDescription): MidiOutput => {
     const midiOutput = new MidiOutput(filter, false);
     return midiOutput;
   } catch (e) {
-    logger.error(
-      "Error finding (hardware) MIDI device with description",
-      { filter },
-      ":",
-      e
+    throw Error(
+      "Error finding (hardware) MIDI device with description " +
+        JSON.stringify(filter) +
+        "; " +
+        e
     );
   }
 };
@@ -65,11 +65,11 @@ export const createVirtualOutput = (details: MidiDeviceDetails): MidiOutput => {
     const midiOutput = new MidiOutput({ name: details.name }, true);
     return midiOutput;
   } catch (e) {
-    logger.error(
-      "Error creating (virtual, software) MIDI device with details",
-      { details },
-      ":",
-      e
+    throw Error(
+      "Error creating (virtual, software) MIDI device with details" +
+        JSON.stringify(details) +
+        "; " +
+        e
     );
   }
 };
