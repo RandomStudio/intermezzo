@@ -3,6 +3,10 @@ import { MidiDeviceDetails } from "./types";
 import midi from "midi";
 import { logger } from ".";
 
+export declare interface BaseMidiDevice {
+  // on(event: string, listener: (payload: any) => void): this;
+  on(event: "ready", listener: (payload: MidiDeviceDetails) => void): this;
+}
 export class BaseMidiDevice extends EventEmitter {
   protected midi: typeof midi.Input | typeof midi.Output;
   protected deviceDetails: MidiDeviceDetails;

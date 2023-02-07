@@ -30,23 +30,28 @@ midiInputs.forEach((input) => {
   const description = input.getDeviceDetails();
   logger.debug("Add handlers for", { description });
 
-  input.on("ready", (match) => {
-    console.log(shortDescription(description), "ready:", match);
+  input.on("ready", (deviceDetails) => {
+    console.log(shortDescription(description), '"ready":`, deviceDetails);
   });
 
   input.on("rawMessage", (e) => {
-    console.log(shortDescription(description), "rawMessage:", e);
+    console.log(shortDescription(description), `"rawMessage":`, e);
   });
 
   input.on("noteOn", (e) => {
-    console.log(shortDescription(description), "noteOn:", e);
+    const { channel, note, velocity } = e;
+    console.log(shortDescription(description), `"noteOn":`, {
+      channel,
+      note,
+      velocity,
+    });
   });
 
   input.on("controlChange", (e) => {
-    console.log(shortDescription(description), "controlChange:", e);
+    console.log(shortDescription(description), `"controlChange":`, e);
   });
 
   input.on("noteOff", (e) => {
-    console.log(shortDescription(description), "noteOff:", e);
+    console.log(shortDescription(description), `"noteOff:"`, e);
   });
 });

@@ -113,4 +113,4 @@ export const setLoglevel = (
 export const isExtendedType = (bytes: number[]) => bytes[0] >= 0xf0;
 
 export const shortDescription = (description: MidiDeviceDetails): string =>
-  `#${description.port ?? "unknown"}: ${description.name ?? "unknown"} `;
+  `#${description.port ?? "unknown"}: ${description.name ?? "unknown"}`;

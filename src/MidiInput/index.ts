@@ -1,8 +1,32 @@
 import midi from "midi";
-import { RawMessage, MidiMessageEvent, DeviceDescription } from "../types";
+import {
+  RawMessage,
+  MidiMessageEvent,
+  DeviceDescription,
+  NoteMessage,
+  ControlChangeMessage,
+  MidiDeviceDetails,
+} from "../types";
 import { BaseMidiDevice } from "../BaseDevice";
 import { logger } from "..";
 import { findMatch, getMessageEvent, getMessageType } from "../utils";
+
+export declare interface MidiInput {
+  on(event: "ready", listener: (payload: MidiDeviceDetails) => void): this;
+  on(
+    event: "noteOn" | "noteOff",
+    listener: (payload: NoteMessage) => void
+  ): this;
+  on(
+    event: "controlChange",
+    listener: (payload: ControlChangeMessage) => void
+  ): this;
+  on(
+    event: "rawMessage",
+    listener: (payload: RawMessage) => void
+  ): this;
+}
+}
 
 export class MidiInput extends BaseMidiDevice {
   constructor(description: DeviceDescription, virtual = false) {
