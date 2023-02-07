@@ -8,7 +8,7 @@ export class BaseMidiDevice extends EventEmitter {
   protected deviceDetails: MidiDeviceDetails;
 
   constructor() {
-    super();
+    super(); // EventEmitter
   }
 
   public getName = () => this.deviceDetails.name;

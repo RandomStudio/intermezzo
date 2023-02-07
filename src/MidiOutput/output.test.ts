@@ -1,10 +1,13 @@
+import { createVirtualOutput } from "../../dist";
+import { messageToBytes } from "../../dist/MidiOutput";
 import { MidiMessageEvent, MessageTypeName } from "../types";
-import { messageToBytes } from "./BaseOutputDevice";
-import { SoftwareOutput } from "./SoftwareOutput";
 
 describe("virtual outputs", () => {
   test("create virtual output", () => {
-    const output = new SoftwareOutput({ name: "VirtualOutputDevice" });
+    const output = createVirtualOutput({
+      name: "VirtualOutputDevice",
+      port: 0,
+    });
 
     expect(output).toBeDefined();
     expect(output.getName()).toBe("VirtualOutputDevice");

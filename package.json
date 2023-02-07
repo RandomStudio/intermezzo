@@ -11,7 +11,8 @@
     "test": "npx jest"
   },
   "bin": {
-    "midi-list": "bin/list.js"
+    "midi-list": "bin/list.js",
+    "midi-listen": "bin/listen.js"
   },
   "repository": "https://github.com/RandomStudio/prestissimo",
   "author": "Stephen Buchanan",

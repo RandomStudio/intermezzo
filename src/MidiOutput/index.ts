@@ -65,7 +65,6 @@ export class MidiOutput extends BaseMidiDevice {
 }
 
 export const messageToBytes = (msg: MidiMessageEvent): number[] => {
-  // tslint:disable-next-line: prefer-const
   let bytes = [];
   if (isNormalMessage(msg.name)) {
     const { channel } = msg.payload as ControlChangeMessage & NoteMessage;
