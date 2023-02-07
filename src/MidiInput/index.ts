@@ -5,7 +5,7 @@ import { logger } from "..";
 import { findMatch, getMessageEvent, getMessageType } from "../utils";
 
 export class MidiInput extends BaseMidiDevice {
-  constructor(description: DeviceDescription, virtual: boolean) {
+  constructor(description: DeviceDescription, virtual = false) {
     super();
     this.midi = new midi.input();
     const { name, port } = description;
@@ -23,6 +23,7 @@ export class MidiInput extends BaseMidiDevice {
         );
       }
 
+      logger.debug("Find match based on", description, "...");
       const match = findMatch(this.midi, description);
 
       if (match === undefined) {
@@ -33,6 +34,7 @@ export class MidiInput extends BaseMidiDevice {
         throw Error("could not find midi device");
       }
 
+      logger.debug("Match on", match);
       this.deviceDetails = match;
 
       logger.info("found matching MIDI device:", match);

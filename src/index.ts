@@ -1,5 +1,4 @@
 // External modules
-import midi from "midi";
 import { getLogger } from "log4js";
 import rc from "rc";
 import parse from "parse-strings-in-object";
@@ -12,6 +11,7 @@ const config: Config = parse(rc("prestissimo", defaults));
 
 export const logger = getLogger("prestissimo");
 logger.level = config.loglevel;
+logger.debug("prestissimo library started with config", config);
 
 // Internal modules
 import { MidiDeviceDetails, DeviceDescription } from "./types";
@@ -32,7 +32,7 @@ export const findInput = (filter: DeviceDescription): MidiInput => {
   }
 };
 
-export const createInput = (details: MidiDeviceDetails): MidiInput => {
+export const createVirtualInput = (details: MidiDeviceDetails): MidiInput => {
   try {
     const midiInput = new MidiInput({ name: details.name }, true);
     return midiInput;
@@ -60,7 +60,7 @@ export const findOutput = (filter: DeviceDescription): MidiOutput => {
   }
 };
 
-export const createOutput = (details: MidiDeviceDetails): MidiOutput => {
+export const createVirtualOutput = (details: MidiDeviceDetails): MidiOutput => {
   try {
     const midiOutput = new MidiOutput({ name: details.name }, true);
     return midiOutput;

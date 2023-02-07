@@ -1,6 +1,6 @@
 export interface MidiDeviceDetails {
   name: string;
-  port?: number;
+  port: number;
 }
 
 export interface DeviceDescription {

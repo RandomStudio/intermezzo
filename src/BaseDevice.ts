@@ -13,7 +13,7 @@ export class BaseMidiDevice extends EventEmitter {
 
   public getName = () => this.deviceDetails.name;
   public getPort = () => this.deviceDetails.port;
-  public getDevice = () => this.deviceDetails;
+  public getDeviceDetails = () => this.deviceDetails;
 
   public close = () => {
     logger.info("closing MIDI device", this.deviceDetails);

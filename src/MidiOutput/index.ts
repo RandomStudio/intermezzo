@@ -24,7 +24,7 @@ export class MidiOutput extends BaseMidiDevice {
     const { name, port } = description;
     if (virtual) {
       this.midi.openVirtualPort(name);
-      this.deviceDetails = { name };
+      this.deviceDetails = { name, port };
       this.emitReady();
     } else {
       if (name === undefined && port === undefined) {
@@ -61,7 +61,7 @@ export class MidiOutput extends BaseMidiDevice {
   public getName = () => this.deviceDetails.name;
   public getPort = () => this.deviceDetails.port;
 
-  public getDevice = () => this.deviceDetails;
+  public getDeviceDetails = () => this.deviceDetails;
 }
 
 export const messageToBytes = (msg: MidiMessageEvent): number[] => {
