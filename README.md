@@ -107,7 +107,7 @@ output.send("noteOn", {
 
 ### Virtual Inputs and Outputs
 
-If you need to create virtual (software-only) MIDI devices on your system, simply use `createInput` instead of `findInput` and `createOutput` instead of `findOutput`. All other functionality is identical.
+If you need to create virtual (software-only) MIDI devices on your system, simply use `createVirtualInput` instead of `findInput` and `createVirtualOutput` instead of `findOutput`. All other functionality is identical.
 
 ### Utils
 
@@ -117,4 +117,12 @@ If you have prestissimo installed as a local or global dependency, you should be
 npx midi-list
 ```
 
-... And get a list of available **input** and **output** MIDI devices available on your system, with full names and port numbers.
+... to get a list of available **input** and **output** MIDI devices available on your system, with full names and port numbers.
+
+or
+
+```
+npx midi-listen
+```
+
+... to listen on all available MIDI Input channels and print out some useful info on any incoming notes, CC values, etc.
