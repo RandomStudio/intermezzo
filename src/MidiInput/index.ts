@@ -21,11 +21,7 @@ export declare interface MidiInput {
     event: "controlChange",
     listener: (payload: ControlChangeMessage) => void
   ): this;
-  on(
-    event: "rawMessage",
-    listener: (payload: RawMessage) => void
-  ): this;
-}
+  on(event: "rawMessage", listener: (payload: RawMessage) => void): this;
 }
 
 export class MidiInput extends BaseMidiDevice {

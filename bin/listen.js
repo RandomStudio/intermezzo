@@ -31,7 +31,7 @@ midiInputs.forEach((input) => {
   logger.debug("Add handlers for", { description });
 
   input.on("ready", (deviceDetails) => {
-    console.log(shortDescription(description), '"ready":`, deviceDetails);
+    console.log(shortDescription(description), `"ready":`, deviceDetails);
   });
 
   input.on("rawMessage", (e) => {
