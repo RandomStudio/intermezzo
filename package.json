@@ -1,6 +1,6 @@
 {
   "name": "prestissimo",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Ergonomic wrapper for node-midi, powered by TypeScript",
   "main": "dist/index.js",
   "scripts": {
@@ -12,7 +12,8 @@
   },
   "bin": {
     "midi-list": "bin/list.js",
-    "midi-listen": "bin/listen.js"
+    "midi-listen": "bin/listen.js",
+    "midi-simulate": "bin/simulate.js"
   },
   "repository": "https://github.com/RandomStudio/prestissimo",
   "author": "Stephen Buchanan",
@@ -21,7 +22,8 @@
     "log4js": "^6.1.0",
     "midi": "^2.0.0",
     "parse-strings-in-object": "^2.0.0",
-    "rc": "^1.2.8"
+    "rc": "^1.2.8",
+    "yargs": "^17.7.1"
   },
   "devDependencies": {
     "@types/jest": "^28.1.4",

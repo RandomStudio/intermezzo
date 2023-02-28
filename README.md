@@ -114,7 +114,7 @@ If you need to create virtual (software-only) MIDI devices on your system, simpl
 If you have prestissimo installed as a local or global dependency, you should be able to run
 
 ```
-npx midi-list
+midi-list
 ```
 
 ... to get a list of available **input** and **output** MIDI devices available on your system, with full names and port numbers.
@@ -122,7 +122,15 @@ npx midi-list
 or
 
 ```
-npx midi-listen
+midi-listen
 ```
 
 ... to listen on all available MIDI Input channels and print out some useful info on any incoming notes, CC values, etc.
+
+or
+
+```
+midi-simulate
+```
+
+... to send a bunch of Control Change values, useful for training or MIDI Mapping. Append `--help` to see the command-line options
